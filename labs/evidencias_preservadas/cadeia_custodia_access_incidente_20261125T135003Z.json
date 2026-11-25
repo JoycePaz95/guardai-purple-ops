@@ -1,0 +1,10 @@
+{
+    "norma": "ISO/IEC 27037",
+    "timestamp_aquisicao_utc": "2026-11-25T13:50:03Z",
+    "perito_responsavel": "Joyce Paz",
+    "arquivo_original": "C:\\Users\\Joyce Paz\\guardai-purple-ops\\labs\\access_incidente.log",
+    "copia_trabalho": "C:\\Users\\Joyce Paz\\guardai-purple-ops\\labs\\evidencias_preservadas\\COPIA_access_incidente.log",
+    "sha256_original": "4b943ee7208f3fdff7f01aee1714029f7ead79865da1080d46178f0750b08e10",
+    "sha256_copia": "4b943ee7208f3fdff7f01aee1714029f7ead79865da1080d46178f0750b08e10",
+    "integridade_verificada": true
+}

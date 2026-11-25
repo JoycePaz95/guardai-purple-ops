@@ -1,0 +1,16 @@
+// Replace WebAccess_CL and RawData with the table/field used by your Sentinel ingestion.
+// A match is an indicator for triage, not proof that the request succeeded server-side.
+WebAccess_CL
+| where TimeGenerated >= ago(30d)
+| extend Raw = tostring(RawData)
+| where Raw contains "Gobuster/"
+    or Raw contains "UNION%20SELECT"
+    or Raw contains "/uploads/shell.php?cmd="
+| extend Indicator = case(
+    Raw contains "Gobuster/", "Wordlist scanner user-agent",
+    Raw contains "UNION%20SELECT", "SQL injection-like request",
+    Raw contains "/uploads/shell.php?cmd=", "Shell-like command request",
+    "Other suspicious web request")
+| extend SourceIP = extract(@"^(\S+)", 1, Raw)
+| project TimeGenerated, SourceIP, Indicator, Raw
+| order by TimeGenerated asc

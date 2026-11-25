@@ -1,0 +1,39 @@
+title: Suspicious Web Reconnaissance, SQLi, and Shell Requests
+author: GuardAI Purple Ops
+date: 2026/11/25
+status: experimental
+level: medium
+id: 5e1c6e43-7d96-4c8b-96eb-b0c8e4076764
+description: >
+  Detects web access-log lines with wordlist-scanner identification, a URL-encoded
+  UNION SELECT request, or a request to a shell-like PHP path with command parameters.
+  A match indicates suspicious request activity, not confirmed exploitation.
+logsource:
+  category: webserver
+definition: >
+  Assumes the collector exposes each complete raw access-log line as the Sigma field
+  'message'. Adapt field mapping to the deployed web-log pipeline.
+detection:
+  selection_scan:
+    message|contains: 'Gobuster/'
+  selection_sqli:
+    message|contains|all:
+      - '/produtos?id='
+      - 'UNION%20SELECT'
+      - 'user,password'
+  selection_shell:
+    message|contains|all:
+      - '/uploads/shell.php?cmd='
+      - 'whoami'
+      - 'cat%20/etc/passwd'
+  condition: selection_scan or selection_sqli or selection_shell
+fields:
+  - message
+falsepositives:
+  - Authorized vulnerability scanning or penetration testing
+  - Test traffic in a development environment
+tags:
+  - attack.t1595.003
+  - attack.t1190
+  - attack.t1505.003
+  - attack.t1059.004
